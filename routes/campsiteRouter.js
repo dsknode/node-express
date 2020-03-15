@@ -48,4 +48,3 @@ campsiteRouter.route('/:campsiteId')
 
 
 module.exports = campsiteRouter;
-//test

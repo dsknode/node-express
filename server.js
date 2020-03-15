@@ -1,7 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+
 const campsiteRouter = require('./routes/campsiteRouter');
+const promotionRouter = require('./routes/promotionRouter');
+const partnerRouter = require('./routes/partnerRouter');
 
 const hostname = 'localhost';
 const port = 3000;
@@ -13,31 +16,10 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
 
-//all, get, post, put, delete for campsites
+//all, get, post, put, delete for campsites and promotions
 app.use('/campsites', campsiteRouter);
-
-
-//all, get, post, put, delete for campsites with ID
-// app.all('/campsites/:campsiteId', (req, res, next) => {
-//     res.statusCode = 200;
-//     res.setHeader('Content-Type', 'text/plain'); // why plain text?
-//     next();
-// });
-// app.get('/campsites/:campsiteId', (req, res) => {
-//     res.end(`will send details of the campsite: ${req.params.campsiteId} to you`);
-// });
-// app.post('/campsites/:campsiteId', (req, res) => {
-//     res.statusCode = 403;
-//     res.end('POST operation not supported on /campsites');
-// });
-// app.put('/campsites/:campsiteId', (req, res) => {
-//     res.write(`updating the campsite: ${req.params.campsiteId}\n`);
-//     res.end(`Will update the campsite:${req.body.name} with the description:${req.body.description}`);
-// });
-// app.delete('/campsites/:campsiteId', (req, res) => {
-//     res.end(`deleting campsite: ${req.params.campsiteId}`);
-// });
-
+app.use('/promotions', promotionRouter);
+app.use('/partners', partnerRouter);
 
 
 app.use((req, res) => {
