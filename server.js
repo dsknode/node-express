@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 
 const hostname = 'localhost';
 const port = 3000;
@@ -7,8 +8,56 @@ const port = 3000;
 const app = express();
 
 app.use(morgan('dev'));
-
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json());
+
+
+
+
+//all, get, post, put, delete for campsites
+app.all('/campsites', (req, res, next) => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain'); // why plain text?
+    next();
+});
+app.get('/campsites', (req, res) => {
+    res.end('will send campsites to you');
+});
+app.post('/campsites', (req, res) => {
+    res.end(`will add campsites:${req.body.name} with description: ${req.body.description}`);
+});
+app.put('/campsites', (req, res) => {
+    res.statusCode = 403;
+    res.end('PUT operation not supported on /campsites');
+});
+app.delete('/campsites', (req, res) => {
+    res.end('deleting all campsites');
+});
+
+
+
+//all, get, post, put, delete for campsites with ID
+app.all('/campsites/:campsiteId', (req, res, next) => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain'); // why plain text?
+    next();
+});
+app.get('/campsites/:campsiteId', (req, res) => {
+    res.end(`will send details of the campsite: ${req.params.campsiteId} to you`);
+});
+app.post('/campsites/:campsiteId', (req, res) => {
+    res.statusCode = 403;
+    res.end('POST operation not supported on /campsites');
+});
+app.put('/campsites/:campsiteId', (req, res) => {
+    res.write(`updating the campsite: ${req.params.campsiteId}\n`);
+    res.end(`Will update the campsite:${req.body.name} with the description:${req.body.description}`);
+});
+app.delete('/campsites/:campsiteId', (req, res) => {
+    res.end(`deleting campsite: ${req.params.campsiteId}`);
+});
+
+
 
 app.use((req, res) => {
     res.statusCode = 200;
@@ -19,3 +68,7 @@ app.use((req, res) => {
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
+
+function newFunction(next) {
+    next();
+}
